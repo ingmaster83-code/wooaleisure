@@ -1,0 +1,33 @@
+title: 우아레저 - 전국 골프연습장·당구장·태권도장·수영장 찾기
+description: >-
+  전국 골프연습장·당구장·태권도장·복싱장·수영장·골프장·스키장의 주소와 전화번호,
+  인허가 정보를 동네별로 확인하세요. 우리 동네 체육시설을 공공데이터로 한 번에 찾을 수 있습니다.
+url: "https://wooaleisure.wooahouse.com"
+baseurl: ""
+lang: ko
+timezone: Asia/Seoul
+author: WooaHouse
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+
+plugins:
+  - jekyll-seo-tag
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - scripts/
+  - data/
+  - "*.py"
+  - "*.log"
+  - README.md
+  - .gitignore
+  - .env
+  - vendor/
+  - _rawdata/
+
+# 설계 메모: 행안부 LOCALDATA 체육시설업 인허가 CSV(영업/정상)를 가공한 _rawdata/lei_{시도}.json 으로
+# 시도→시군구→동 허브 + 종목×(시도/시군구/동) 허브 + 시설 상세를 생성한다. 사이트맵은 leisure_generator.rb 분할본.

@@ -1,0 +1,16 @@
+---
+layout: default
+title: 지역별 체육시설 - 골프연습장·당구장·태권도장·수영장
+description: 시/도별 전국 체육시설 목록. 서울, 경기, 부산 등 지역별로 골프연습장·당구장·태권도장·수영장 정보를 확인하세요.
+---
+
+<div class="section">
+  <nav class="breadcrumb"><a href="/">홈</a> <span>›</span> <span>지역별 체육시설</span></nav>
+  <h1 style="font-size:1.6rem;font-weight:800;margin:20px 0 8px;">📍 지역별 체육시설 찾기</h1>
+  <p style="color:#6B7280;margin-bottom:32px;">시/도를 선택하세요</p>
+
+  <div class="region-grid">
+    {% for d in site.data.lei_stats.do_counts %}<a href="/region/{{ d.name }}/" class="region-btn"><span class="region-icon">📍</span>{{ d.name }} <span style="color:#9CA3AF;font-size:.82rem;">({{ d.count }})</span></a>
+    {% endfor %}
+  </div>
+</div>

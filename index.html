@@ -1,0 +1,110 @@
+---
+layout: default
+title: 우아레저 - 전국 골프연습장·당구장·태권도장·수영장 찾기 (4만 곳)
+description: 우리 동네 골프연습장·당구장·태권도장·복싱장·수영장 주소와 전화번호를 동·구별로 찾아보세요. 전국 4만여 곳 체육시설을 공공데이터 기준으로 정리했습니다.
+---
+
+<div class="hero">
+  <h1>우아레저 · 🏅 우리 동네 당구장·태권도장·골프연습장 찾기</h1>
+  <p>동네 이름과 종목으로 주소·전화번호를 바로 확인하세요 (예: 역삼동 당구장)</p>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" class="search-input"
+           placeholder="예) 역삼동 당구장, 해운대 수영장, 태권도..."
+           autocomplete="off" aria-label="체육시설 검색">
+    <button class="search-btn" onclick="doSearch()">🔍 검색</button>
+  </div>
+</div>
+
+<div class="page-with-sidebar">
+<div>
+<div id="search-results"></div>
+
+<div class="top-ad-bar">
+  {% include ad.html %}
+</div>
+
+<div class="section" style="padding-bottom:0;">
+  <div class="info-box">
+    💡 행정안전부 인허가 데이터에서 영업 중인 <strong>{{ site.data.lei_stats.total_fmt }}곳</strong>의 민간 체육시설(골프연습장·당구장·태권도장·복싱장·합기도장·유도장·검도장·수영장·골프장·스키장)을 시도·시군구·동·종목별로 정리했습니다.
+    각 시설의 주소, 전화번호, 인허가일과 같은 동네 다른 시설을 한눈에 볼 수 있습니다.
+  </div>
+</div>
+
+<div class="section">
+  <h2 class="section-title">🏷️ 종목별로 찾기</h2>
+  <div class="cat-btn-grid">
+    {% for c in site.data.lei_stats.cats %}<a class="cat-btn" href="/cat/{{ c.slug }}/"><span class="ico">{{ c.icon }}</span>{{ c.label }}<small>전국 {{ c.count_fmt }}곳</small></a>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="section">
+  <h2 class="section-title">📍 지역별로 찾기</h2>
+  <div class="region-grid">
+    {% for d in site.data.lei_stats.do_counts %}<a href="/region/{{ d.name }}/" class="region-btn"><span class="region-icon">📍</span>{{ d.name }} <span style="color:#9CA3AF;font-size:.82rem;">({{ d.count }})</span></a>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="section">
+  <h2 class="section-title">🔥 시설이 많은 지역·종목</h2>
+  <div class="chip-row">
+    {% for c in site.data.lei_stats.top_combos %}<a class="chip" href="{{ c.url }}">{{ c.do }} {{ c.label }}<em>{{ c.count }}</em></a>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="section">
+  <h2 class="section-title">✅ 체육시설 이용 전 확인하세요</h2>
+  <ul style="color:#374151;line-height:1.9;font-size:.93rem;padding-left:22px;">
+    <li>공공데이터는 폐업 신고 반영에 <strong>시차</strong>가 있어 실제 영업 여부와 다를 수 있으니 방문 전 <strong>전화 확인</strong>이 안전합니다.</li>
+    <li>요금·운영 시간·수강 정원은 업장마다 다르고 자주 바뀌므로 직접 문의하세요.</li>
+    <li>회원권·수강권은 <strong>환불 규정</strong>과 중도 해지 조건을 서면으로 확인하세요.</li>
+    <li>어린이 통학 차량을 운행하는 도장은 <strong>어린이통학버스 신고 여부</strong>를 확인하세요.</li>
+  </ul>
+  <p style="margin-top:12px;"><a href="/guide/">체육시설 고르는 방법 자세히 보기 →</a></p>
+</div>
+
+</div>
+<aside class="tool-sidebar"></aside>
+</div>
+
+<script>
+let items = null;
+
+async function loadIndex() {
+  if (items) return;
+  const resp = await fetch('/search_index.json');
+  items = await resp.json();
+  items.forEach(f => { f.h = (f.n + ' ' + f.do + ' ' + f.sg + ' ' + f.dg + ' ' + f.c).toLowerCase(); });
+}
+
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+function doSearch() {
+  const q = document.getElementById('searchInput').value.trim();
+  const el = document.getElementById('search-results');
+  if (!q) { el.innerHTML = ''; return; }
+  el.innerHTML = '<p style="text-align:center;padding:20px;color:#6B7280;">검색 중...</p>';
+  loadIndex().then(() => {
+    const toks = q.toLowerCase().split(/\s+/).filter(Boolean);
+    const results = [];
+    for (const f of items) {
+      if (toks.every(t => f.h.includes(t))) { results.push(f); if (results.length >= 40) break; }
+    }
+    if (results.length === 0) {
+      el.innerHTML = '<p style="text-align:center;padding:20px;color:#6B7280;">검색 결과가 없습니다.</p>';
+      return;
+    }
+    el.innerHTML = `<div style="max-width:960px;margin:0 auto;padding:0 20px;">
+      <p style="padding:8px 0;font-size:.9rem;color:#6B7280;">"${esc(q)}" 검색 결과 ${results.length}${results.length >= 40 ? '+' : ''}개</p>
+      <ul class="office-list">${results.map(f => `<li><a href="/place/${f.s}/"><b>${esc(f.n)}</b><small>${esc(f.c)} · ${esc(f.do)} ${esc(f.sg)} ${f.dg === '기타' ? '' : esc(f.dg)}</small></a></li>`).join('')}</ul>
+    </div>`;
+    el.scrollIntoView({ behavior: 'smooth' });
+  });
+}
+
+document.getElementById('searchInput').addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+const urlQ = new URLSearchParams(location.search).get('q');
+if (urlQ) { document.getElementById('searchInput').value = urlQ; doSearch(); }
+</script>

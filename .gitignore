@@ -1,0 +1,5 @@
+.env
+_site/
+_rawdata/leisure_raw.json
+data/raw/
+Gemfile.lock
