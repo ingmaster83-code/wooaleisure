@@ -61,6 +61,7 @@ layout: default
       {% if page.catDongCount > 1 and page.dong != "기타" %}<a href="/cat/{{ page.catSlug }}/{{ page.doShort | uri_escape }}/{{ page.sgSlug | uri_escape }}/{{ page.dong | uri_escape }}/">{{ page.dongLabel }} {{ page.catLabel }} 모아보기 →</a>{% endif %}
       <a href="/cat/{{ page.catSlug }}/{{ page.doShort | uri_escape }}/{{ page.sgSlug | uri_escape }}/">{{ page.sigungu }} {{ page.catLabel }} →</a>
       <a href="/region/{{ page.doShort | uri_escape }}/{{ page.sgSlug | uri_escape }}/{{ page.dong | uri_escape }}/">{{ page.dongLabel }} 모든 종목 →</a>
+      {% if page.dong != "기타" %}<a href="https://wooatown.wooahouse.com/동네/{{ page.doShort | uri_escape }}/{{ page.sgSlug | uri_escape }}/{{ page.dong | uri_escape }}/">🏘️ {{ page.dongLabel }} 전체 생활정보 (우아동네) →</a>{% endif %}
     </p>
     <a href="https://map.kakao.com/?q={{ page.addr | uri_escape }}" class="reserve-btn secondary" style="margin-top:12px;display:block;">🗺️ 카카오맵에서 위치 확인</a>
   </div>

@@ -46,7 +46,7 @@ layout: default
   <div class="tip-box">
     <h2>{{ page.sigungu }} {{ page.dongLabel }} 체육시설 이용 전 확인하세요</h2>
     <p>위 목록은 공공 인허가 데이터에서 영업/정상 상태로 등록된 시설입니다. 휴업·폐업이 반영되기까지 시차가 있으니 방문 전에 전화로 영업 여부와 요금, 운영 시간을 확인하세요.</p>
-    <p style="margin-top:8px;"><a href="/region/{{ page.doShort | uri_escape }}/{{ page.sgSlug | uri_escape }}/">{{ page.sigungu }} 전체 체육시설 보기 →</a></p>
+    <p style="margin-top:8px;"><a href="/region/{{ page.doShort | uri_escape }}/{{ page.sgSlug | uri_escape }}/">{{ page.sigungu }} 전체 체육시설 보기 →</a> · {% if page.dong != "기타" %}<a href="https://wooatown.wooahouse.com/동네/{{ page.doShort | uri_escape }}/{{ page.sgSlug | uri_escape }}/{{ page.dong | uri_escape }}/">🏘️ {{ page.dongLabel }} 전체 생활정보 (우아동네) →</a>{% endif %}</p>
   </div>
 
 </div>
